@@ -36,7 +36,7 @@
         /* ส่วนหัว Header ที่ตัดข้อความออกแล้ว เหลือแค่ Score */
         .header {
             display: flex;
-            justify-content: flex-end; /* จัด Score ให้อยู่ชิดขวา */
+            justify-content: flex-end;
             align-items: flex-start;
             color: white;
             margin-bottom: 15px;
@@ -92,7 +92,7 @@
             cursor: pointer; 
             transition: all 0.2s ease; 
             padding: 2px; 
-            font-size: clamp(10px, 2.8vw, 14px); /* ขนาดตัวอักษรพื้นฐานตั้งต้น */
+            font-size: clamp(10px, 2.8vw, 14px); 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             
             /* บังคับให้อยู่บรรทัดเดียวเสมอ */
@@ -165,23 +165,16 @@
     </div>
 
     <script>
+        // อัปเดตคลังคำศัพท์ใหม่ตามที่ระบุ
         const allWords = [
-            "Sincere", "Honest", "Transparency", "Trustworthy", "Accountability",
-            "Ethical", "Integrity", "Fair", "Truth", "Reliable",
-            "Responsible", "Authenticity", "Commitment", "Dedication", "Uprightness",
-            "Probity", "Principle", "Respect", "Empathy", "Consistency",
-            "ซื่อสัตย์", "จริงใจ", "โปร่งใส", "ซื่อตรง", "ตรงไปตรงมา", 
-            "สุจริต", "ความถูกต้อง", "รักษาคำพูด", "เที่ยงตรง", "น่าเชื่อถือ", 
-            "ไม่โกง", "ไว้ใจได้", "มั่นคง", "รับผิดชอบ", "ตรวจสอบได้", 
-            "สัจจะ", "เป็นคนดี", "ยุติธรรม", "คุณธรรม", "ไม่โกหก", 
-            "ชัดเจน", "เชื่อใจ", "เปิดเผย", "ขยัน", "ครบถ้วน", 
-            "ถูกต้อง", "ตรงต่อเวลา", "เคารพกฎ", "เคารพหน้าที่", "สม่ำเสมอ", 
-            "มีวินัย", "กล้าหาญ", "อดทน", "เสียสละ", "เมตตา", 
-            "เห็นอกเห็นใจ", "ให้เกียรติ", "เคารพกัน", "สามัคคี", "ร่วมมือ", 
-            "ตั้งใจ", "มุ่งมั่น", "ทุ่มเท", "รับฟัง", "ใจกว้าง", 
-            "รอบคอบ", "พัฒนา", "เรียนรู้", "ความจริง", "ความโปร่งใส", 
-            "ความรับผิดชอบ", "ความน่าเชื่อถือ", "ความยุติธรรม", "ความไว้วางใจ", "ความซื่อตรง", 
-            "ความมุ่งมั่น", "ความสม่ำเสมอ", "ความเคารพ", "ความร่วมมือ", "ความเมตตา"
+            "จริงใจ", "โปร่งใส", "สุจริต", "น่าเชื่อถือ", "มั่นคง", 
+            "รับผิดชอบ", "ยุติธรรม", "คุณธรรม", "ชัดเจน", "ขยัน", 
+            "ถูกต้อง", "สม่ำเสมอ", "มีวินัย", "กล้าหาญ", "อดทน", 
+            "เสียสละ", "เมตตา", "ให้เกียรติ", "สามัคคี", "ร่วมมือ", 
+            "ตั้งใจ", "ใจกว้าง", "รอบคอบ", "พัฒนา", "เรียนรู้",
+            "Honest", "Sincere", "Transparency", "Trustworthy", "Accountability",
+            "Ethical", "Integrity", "Fair", "Reliable", "Authenticity", 
+            "Commitment", "Principle", "Respect", "Empathy"
         ];
 
         let totalBingos = 0;
@@ -211,7 +204,7 @@
             setTimeout(adjustFontSizeToFit, 0);
         }
 
-        // ฟังก์ชันใหม่: ค่อยๆ ลดขนาดฟอนต์ของคำที่ล้น ให้พอดีกับ 1 บรรทัดในช่อง
+        // ค่อยๆ ลดขนาดฟอนต์ของคำที่ล้น ให้พอดีกับ 1 บรรทัดในช่อง
         function adjustFontSizeToFit() {
             const cells = document.querySelectorAll('#bingoTable td');
             cells.forEach(cell => {
@@ -219,7 +212,7 @@
                 cell.style.fontSize = ''; 
                 let currentSize = parseFloat(window.getComputedStyle(cell).fontSize);
                 
-                // ตรวจสอบว่าความกว้างเนื้อหา (scrollWidth) ทะลุกรอบ (clientWidth) หรือไม่
+                // ตรวจสอบว่าความกว้างเนื้อหาทะลุกรอบหรือไม่
                 // ถ้าทะลุ ให้ลดขนาดฟอนต์ทีละ 0.5 จนกว่าจะพอดี
                 while (cell.scrollWidth > cell.clientWidth - 4 && currentSize > 6) {
                     currentSize -= 0.5;
@@ -246,7 +239,7 @@
             lastBingoState = isBingo;
         }
 
-        // จัดการให้ปรับฟอนต์ใหม่ด้วยเมื่อผู้ใช้หมุนหน้าจอโทรศัพท์
+        // จัดการให้ปรับฟอนต์ใหม่ด้วยเมื่อผู้ใช้หมุนหน้าจอหรือย่อขยาย
         window.addEventListener('resize', adjustFontSizeToFit);
 
         createBingo();
