@@ -40,7 +40,7 @@
             50% { height: 200px; }
         }
 
-        /* ตารางแบบยืดหยุ่นพอดีหน้าจอ */
+        /* ตารางแบบยืดหยุ่นล็อก Layout ตายตัว */
         table { 
             border-collapse: separate; border-spacing: 8px; 
             background: white; border-radius: 20px; 
@@ -50,15 +50,21 @@
             width: 95%;
             max-width: 600px;
         }
+
+        /* ปรับสี่เหลี่ยมจัตุรัสให้เท่ากันทุกช่องอย่างสมบูรณ์ */
         td {
             width: 20%; 
-            aspect-ratio: 1 / 1; 
+            aspect-ratio: 1 / 1; /* ล็อกสัดส่วนสี่เหลี่ยมจัตุรัส 1:1 ทุกหน้าจอ */
             border: 2px solid #524388;
-            border-radius: 15px; text-align: center; font-weight: bold; 
-            color: #524388; cursor: pointer; transition: 0.3s; 
+            border-radius: 15px; 
+            text-align: center; 
+            font-weight: bold; 
+            color: #524388; 
+            cursor: pointer; 
+            transition: 0.3s; 
             padding: 5px; 
             font-size: calc(10px + 0.4vw); 
-            box-sizing: border-box;
+            box-sizing: border-box; /* บังคับให้ border อยู่ข้างใน ช่องจะไม่เบี้ยว */
             vertical-align: middle;
             
             /* ป้องกันคำล้นช่อง */
@@ -69,19 +75,19 @@
         td:hover { background-color: #f0f0f0; }
         td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
         
-        .free-space { border: none !important; background: transparent !important; cursor: default; }
+        /* ช่องตรงกลางกำหนดขอบเหมือนช่องปกติ เพื่อไม่ให้ขนาดโครงสร้างเพี้ยน */
+        .free-space { border: 2px solid transparent !important; background: transparent !important; cursor: default; }
         
-        /* ขยายโลโก้ตรงกลางโดยสัดส่วนไม่เพี้ยน */
+        /* ขยายโลโก้ตรงกลางให้อยู่ในบล็อกสี่เหลี่ยมเท่าเพื่อนๆ */
         .free-space img { 
-            width: 95%; 
-            height: 95%; 
-            max-width: 90px;
-            max-height: 90px;
-            object-fit: contain; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* ป้องกันภาพบี้เบี้ยว ขยายเต็มช่องสูงสุด */
             border-radius: 50%; 
             border: 4px solid #F1921E; 
             display: block;
             margin: 0 auto;
+            box-sizing: border-box;
         }
 
         #bingoOverlay {
