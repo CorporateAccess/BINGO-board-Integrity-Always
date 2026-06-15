@@ -8,53 +8,47 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding: 20px 10px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color: #f8f9fa;
+            min-height: 100vh;
         }
 
-        h1 { color: #524388; margin-bottom: 20px; text-align: center; }
+        h1 { color: #524388; margin: 10px 0; font-size: 5vw; }
 
-        /* ตารางแบบยืดหยุ่น (Responsive) */
+        /* ตารางแบบเต็มจอ */
         table { 
             border-collapse: separate; 
-            border-spacing: 5px; 
+            border-spacing: 2px; 
             background: white; 
-            border-radius: 15px; 
-            padding: 10px; 
+            padding: 5px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-            border: 3px solid #524388;
-            width: 100%;
-            max-width: 500px; /* จำกัดขนาดไม่ให้ใหญ่เกินไปในคอม */
+            border: 2px solid #524388;
+            width: 100vw; /* เต็มความกว้างหน้าจอ */
+            table-layout: fixed;
         }
 
         td {
-            /* ใช้ vmin เพื่อให้ช่องตารางเป็นจัตุรัสและปรับตามหน้าจอที่แคบกว่า */
-            width: 18vw; 
-            height: 18vw;
-            max-width: 90px;
-            max-height: 90px;
-            border: 2px solid #524388;
-            border-radius: 10px;
+            /* ใช้สัดส่วน vh/vw เพื่อให้ตารางเต็มจอและคงรูปทรงจัตุรัส */
+            width: 20%; 
+            height: 18vw; 
+            border: 1px solid #524388;
             text-align: center;
             font-weight: bold;
             color: #524388;
             cursor: pointer;
-            font-size: 3vw; /* ปรับขนาดตัวอักษรตามจอ */
+            font-size: 2.5vw;
             padding: 2px;
-        }
-        
-        @media (min-width: 500px) {
-            td { font-size: 14px; }
+            overflow: hidden;
+            word-wrap: break-word;
         }
 
-        td:hover { background-color: #f0f0f0; }
         td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
         
         .free-space { border: none !important; background: transparent !important; cursor: default; }
-        .free-space img { width: 80%; height: 80%; border-radius: 50%; border: 3px solid #F1921E; }
+        .free-space img { width: 80%; height: 80%; border-radius: 50%; border: 2px solid #F1921E; }
 
         #bingoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -69,7 +63,7 @@
     <table id="bingoTable"></table>
     
     <div id="bingoOverlay" onclick="this.style.display='none'">
-        <div style="font-size: 50px; color: #524388; font-weight: bold;">BINGO!</div>
+        <div style="font-size: 10vw; color: #524388; font-weight: bold;">BINGO!</div>
     </div>
 
     <script>
