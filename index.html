@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Integrity Bingo</title>
+    <title>Integrity Always</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -155,7 +155,7 @@
     <div class="app-container">
         <div class="header">
             <div class="title-area">
-                <div class="title-main">Integrity <span>BINGO</span></div>
+                <div class="title-main">Integrity <span>Always</span></div>
             </div>
             <div class="score-area">
                 BINGO<br>
@@ -198,7 +198,7 @@
                     let cell = row.insertCell();
                     if (i === 2 && j === 2) {
                         cell.className = 'free-space marked';
-                        cell.innerHTML = 'Integrity Always'; // เปลี่ยนข้อความเป็น Integrity Always
+                        cell.innerHTML = 'SET'; // เปลี่ยนข้อความเป็น SET
                     } else {
                         cell.innerHTML = shuffled.pop();
                         cell.onclick = function() { 
