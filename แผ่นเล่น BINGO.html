@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrity Bingo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        h1 { 
+            font-size: 8vmin;
+            color: #524388;
+            margin: 20px 0; 
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* กราฟแท่ง (ปรับขนาดให้ยืดหยุ่น) */
+        .chart-container {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 20vh;
+            display: flex; justify-content: space-around; align-items: flex-end;
+            z-index: 0; opacity: 0.5;
+        }
+        .bar { width: 8%; border-radius: 5px 5px 0 0; animation: stockMove 2.5s infinite ease-in-out; }
+        .bar:nth-child(4n+1) { background-color: #e74c3c; }
+        .bar:nth-child(4n+2) { background-color: #f39c12; }
+        .bar:nth-child(4n+3) { background-color: #f1c40f; }
+        .bar:nth-child(4n+4) { background-color: #3498db; }
+
+        @keyframes stockMove {
+            0%, 100% { height: 20%; }
+            50% { height: 80%; }
+        }
+
+        /* ตารางปรับขนาดด้วย vmin ให้ Fit กับทุกหน้าจอ */
+        table { 
+            border-collapse: separate; border-spacing: 1vmin; 
+            background: white; border-radius: 3vmin; 
+            padding: 2vmin; box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.1); 
+            z-index: 1; border: 0.5vmin solid #524388;
+            width: 90vmin; height: 90vmin;
+        }
+        td {
+            width: 18vmin; height: 18vmin;
+            border: 0.2vmin solid #524388;
+            border-radius: 2vmin; text-align: center; font-weight: bold; 
+            color: #524388; cursor: pointer; transition: 0.3s; 
+            font-size: 2.2vmin; padding: 0.5vmin;
+        }
+        td:hover { background-color: #f1f3f5; }
+        td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
+        
+        .free-space { border: none !important; background: transparent !important; cursor: default; }
+        .free-space img { width: 15vmin; height: 15vmin; border-radius: 50%; border: 0.5vmin solid #F1921E; }
+
+        #bingoOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95); display: none;
+            justify-content: center; align-items: center; z-index: 10;
+        }
+        #bingoText { font-size: 15vmin; color: #524388; font-weight: bold; text-shadow: 1vmin 1vmin #F1921E; }
+    </style>
+</head>
+<body>
+
+    <h1>INTEGRITY BINGO</h1>
+    
+    <div class="chart-container">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+
+    <table id="bingoTable"></table>
+    
+    <div id="bingoOverlay" onclick="this.style.display='none'">
+        <div id="bingoText">BINGO!</div>
+    </div>
+
+    <script>
+        const allWords = ["ซื่อสัตย์", "จริงใจ", "โปร่งใส", "ซื่อตรง", "ตรงไปตรงมา", "สุจริต", "ความถูกต้อง", "รักษาคำพูด", "เที่ยงตรง", "น่าเชื่อถือ", "ไม่โกง", "ไว้ใจได้", "มั่นคง", "รับผิดชอบ", "ตรวจสอบได้", "สัจจะ", "เป็นคนดี", "ยุติธรรม", "คุณธรรม", "ไม่โกหก", "ชัดเจน", "เชื่อใจ", "เปิดเผย", "ขยัน", "ครบถ้วน", "ถูกต้อง", "ตรงต่อเวลา", "เคารพกฎ", "เคารพหน้าที่", "สม่ำเสมอ", "มีวินัย", "กล้าหาญ", "อดทน", "เสียสละ", "เมตตา", "เห็นอกเห็นใจ", "ให้เกียรติ", "เคารพกัน", "สามัคคี", "ร่วมมือ", "ตั้งใจ", "มุ่งมั่น", "ทุ่มเท", "รับฟัง", "ใจกว้าง", "รอบคอบ", "พัฒนา", "เรียนรู้", "ความจริง", "ความโปร่งใส", "ความรับผิดชอบ", "ความน่าเชื่อถือ", "ความยุติธรรม", "ความไว้วางใจ", "ความซื่อตรง", "ความมุ่งมั่น", "ความสม่ำเสมอ", "ความเคารพ", "ความร่วมมือ", "ความเมตตา"];
+
+        function createBingo() {
+            const table = document.getElementById('bingoTable');
+            let shuffled = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 24);
+            
+            for (let i = 0; i < 5; i++) {
+                let row = table.insertRow();
+                for (let j = 0; j < 5; j++) {
+                    let cell = row.insertCell();
+                    if (i === 2 && j === 2) {
+                        cell.className = 'free-space marked';
+                        cell.innerHTML = '<img src="image_bc9682.png" alt="Logo">';
+                    } else {
+                        cell.innerHTML = shuffled.pop();
+                        cell.onclick = function() { this.classList.toggle('marked'); checkBingo(); };
+                    }
+                }
+            }
+        }
+
+        function checkBingo() {
+            const grid = Array.from(document.querySelectorAll('td')).map(c => c.classList.contains('marked'));
+            let isBingo = false;
+            for (let i = 0; i < 5; i++) {
+                if ([0,1,2,3,4].every(j => grid[i*5 + j]) || [0,1,2,3,4].every(j => grid[j*5 + i])) isBingo = true;
+            }
+            if ([0,6,12,18,24].every(i => grid[i]) || [4,8,12,16,20].every(i => grid[i])) isBingo = true;
+            document.getElementById('bingoOverlay').style.display = isBingo ? 'flex' : 'none';
+        }
+        createBingo();
+    </script>
+</body>
+</html>
