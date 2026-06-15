@@ -33,14 +33,29 @@
             overflow: hidden;
         }
 
-        /* ส่วนหัว Header ที่ตัดข้อความออกแล้ว เหลือแค่ Score */
+        /* ส่วนหัว Header ที่เพิ่มชื่อกิจกรรมเข้าไป */
         .header {
             display: flex;
-            justify-content: flex-end;
-            align-items: flex-start;
+            justify-content: space-between;
+            align-items: center;
             color: white;
             margin-bottom: 15px;
             padding: 0 5px;
+        }
+
+        .title-area {
+            flex: 1;
+        }
+
+        .title-main {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .title-main span {
+            color: #fca311;
         }
 
         .score-area {
@@ -76,7 +91,7 @@
             border-spacing: 8px; 
             width: 100%;
             table-layout: fixed; 
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
 
         td {
@@ -114,16 +129,9 @@
             background: linear-gradient(180deg, #ffb703 0%, #fb8500 100%) !important;
             color: white !important;
             border: none !important;
-            font-size: clamp(12px, 3.5vw, 16px) !important;
+            font-size: clamp(10px, 2.5vw, 14px) !important;
             font-weight: 700 !important;
             cursor: default;
-        }
-
-        .footer-text {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            font-size: 12px;
-            font-weight: 400;
         }
 
         #bingoOverlay {
@@ -146,6 +154,9 @@
 
     <div class="app-container">
         <div class="header">
+            <div class="title-area">
+                <div class="title-main">Integrity <span>BINGO</span></div>
+            </div>
             <div class="score-area">
                 BINGO<br>
                 <div class="score-number" id="scoreDisplay">0</div>
@@ -155,8 +166,6 @@
         <div class="divider"></div>
 
         <table id="bingoTable"></table>
-
-        <div class="footer-text">พร้อมรับมือความท้าทาย เพื่อทุกเป้าหมาย</div>
     </div>
     
     <div id="bingoOverlay" onclick="this.style.display='none'">
@@ -165,7 +174,6 @@
     </div>
 
     <script>
-        // อัปเดตคลังคำศัพท์ใหม่ตามที่ระบุ
         const allWords = [
             "จริงใจ", "โปร่งใส", "สุจริต", "น่าเชื่อถือ", "มั่นคง", 
             "รับผิดชอบ", "ยุติธรรม", "คุณธรรม", "ชัดเจน", "ขยัน", 
@@ -190,7 +198,7 @@
                     let cell = row.insertCell();
                     if (i === 2 && j === 2) {
                         cell.className = 'free-space marked';
-                        cell.innerHTML = 'FREE';
+                        cell.innerHTML = 'Integrity Always'; // เปลี่ยนข้อความเป็น Integrity Always
                     } else {
                         cell.innerHTML = shuffled.pop();
                         cell.onclick = function() { 
