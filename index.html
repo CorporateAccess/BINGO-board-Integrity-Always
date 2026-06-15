@@ -2,82 +2,74 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integrity Bingo</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            min-height: 100vh;
+            padding: 20px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color: #f8f9fa;
         }
 
-        h1 { 
-            color: #524388; 
-            margin-top: 30px; 
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
+        h1 { color: #524388; margin-bottom: 20px; text-align: center; }
 
-        /* กราฟแท่งสีสัน */
-        .chart-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 200px;
-            display: flex; justify-content: space-around; align-items: flex-end;
-            z-index: 0; opacity: 0.6;
-        }
-        .bar { width: 40px; border-radius: 5px 5px 0 0; animation: stockMove 2.5s infinite ease-in-out; }
-        .bar:nth-child(4n+1) { background-color: #e74c3c; }
-        .bar:nth-child(4n+2) { background-color: #f39c12; }
-        .bar:nth-child(4n+3) { background-color: #f1c40f; }
-        .bar:nth-child(4n+4) { background-color: #3498db; }
-
-        @keyframes stockMove {
-            0%, 100% { height: 60px; }
-            50% { height: 200px; }
-        }
-
-        /* ตารางขนาดคงที่ */
+        /* ตารางแบบยืดหยุ่น (Responsive) */
         table { 
-            border-collapse: separate; border-spacing: 8px; 
-            background: white; border-radius: 20px; 
-            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-            z-index: 1; margin-top: 20px; border: 3px solid #524388;
+            border-collapse: separate; 
+            border-spacing: 5px; 
+            background: white; 
+            border-radius: 15px; 
+            padding: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            border: 3px solid #524388;
+            width: 100%;
+            max-width: 500px; /* จำกัดขนาดไม่ให้ใหญ่เกินไปในคอม */
         }
+
         td {
-            width: 110px; height: 110px; border: 2px solid #524388;
-            border-radius: 15px; text-align: center; font-weight: bold; 
-            color: #524388; cursor: pointer; transition: 0.3s; 
-            padding: 5px; font-size: 14px;
+            /* ใช้ vmin เพื่อให้ช่องตารางเป็นจัตุรัสและปรับตามหน้าจอที่แคบกว่า */
+            width: 18vw; 
+            height: 18vw;
+            max-width: 90px;
+            max-height: 90px;
+            border: 2px solid #524388;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #524388;
+            cursor: pointer;
+            font-size: 3vw; /* ปรับขนาดตัวอักษรตามจอ */
+            padding: 2px;
         }
+        
+        @media (min-width: 500px) {
+            td { font-size: 14px; }
+        }
+
         td:hover { background-color: #f0f0f0; }
         td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
         
         .free-space { border: none !important; background: transparent !important; cursor: default; }
-        .free-space img { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #F1921E; }
+        .free-space img { width: 80%; height: 80%; border-radius: 50%; border: 3px solid #F1921E; }
 
         #bingoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.95); display: none;
             justify-content: center; align-items: center; z-index: 10;
         }
-        #bingoText { font-size: 100px; color: #524388; font-weight: bold; text-shadow: 5px 5px #F1921E; }
     </style>
 </head>
 <body>
 
     <h1>INTEGRITY BINGO</h1>
-    
-    <div class="chart-container">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
-
     <table id="bingoTable"></table>
     
     <div id="bingoOverlay" onclick="this.style.display='none'">
-        <div id="bingoText">BINGO!</div>
+        <div style="font-size: 50px; color: #524388; font-weight: bold;">BINGO!</div>
     </div>
 
     <script>
@@ -94,7 +86,6 @@
 
         function createBingo() {
             const table = document.getElementById('bingoTable');
-            // สุ่มเลือก 24 คำจากรายการทั้งหมด 80 คำ
             let shuffled = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 24);
             
             for (let i = 0; i < 5; i++) {
@@ -103,7 +94,7 @@
                     let cell = row.insertCell();
                     if (i === 2 && j === 2) {
                         cell.className = 'free-space marked';
-                        cell.innerHTML = '<img src="image_bc9682.png" alt="Integrity">';
+                        cell.innerHTML = '<img src="image_bc9682.png" alt="Logo">';
                     } else {
                         cell.innerHTML = shuffled.pop();
                         cell.onclick = function() { this.classList.toggle('marked'); checkBingo(); };
