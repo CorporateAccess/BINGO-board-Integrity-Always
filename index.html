@@ -2,122 +2,211 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Integrity Bingo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Prompt', sans-serif;
             margin: 0;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            background-color: #f8f9fa;
+            /* พื้นหลังสีน้ำเงินเข้มแบบในภาพ */
+            background: linear-gradient(135deg, #0a3a70 0%, #031a3a 100%);
+            padding: 15px;
         }
 
-        h1 { 
-            color: #524388; 
-            margin-top: 30px; 
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
+        /* กรอบแอปพลิเคชันหลัก */
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(180deg, #1b62a6 0%, #104276 100%);
+            border-radius: 25px;
+            padding: 25px 15px 20px 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* กราฟแท่งสีสัน */
-        .chart-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 200px;
-            display: flex; justify-content: space-around; align-items: flex-end;
-            z-index: 0; opacity: 0.6;
-        }
-        .bar { width: 40px; border-radius: 5px 5px 0 0; animation: stockMove 2.5s infinite ease-in-out; }
-        .bar:nth-child(4n+1) { background-color: #e74c3c; }
-        .bar:nth-child(4n+2) { background-color: #f39c12; }
-        .bar:nth-child(4n+3) { background-color: #f1c40f; }
-        .bar:nth-child(4n+4) { background-color: #3498db; }
-
-        @keyframes stockMove {
-            0%, 100% { height: 60px; }
-            50% { height: 200px; }
+        /* ส่วนหัว Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: white;
+            margin-bottom: 15px;
+            padding: 0 5px;
         }
 
-        /* [ปรับปรุงจุดที่ 1] ปรับตารางแบบ Responsive รองรับคอมและมือถือพอดีจอ */
+        .title-area {
+            flex: 1;
+        }
+
+        .title-top {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: -5px;
+        }
+
+        .title-main {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .title-main span {
+            color: #fca311; /* สีส้ม */
+        }
+
+        .title-desc {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+        }
+
+        .score-area {
+            text-align: right;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .score-number {
+            font-size: 32px;
+            color: #fca311;
+            line-height: 1;
+        }
+
+        /* เส้นตกแต่งใต้ Header */
+        .divider {
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin: 15px 5px 20px 5px;
+            position: relative;
+        }
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ตารางบิงโก */
         table { 
-            border-collapse: separate; border-spacing: 8px; 
-            background: white; border-radius: 20px; 
-            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-            z-index: 1; margin-top: 20px; border: 3px solid #524388;
-            table-layout: fixed;
-            width: 95%;
-            max-width: 600px; /* ขนาดสูงสุดเมื่อดูบนคอมพิวเตอร์ */
+            border-collapse: separate; 
+            border-spacing: 8px; /* ระยะห่างระหว่างช่อง */
+            width: 100%;
+            table-layout: fixed; 
+            margin-bottom: 15px;
         }
 
-        /* [ปรับปรุงจุดที่ 1] บังคับสี่เหลี่ยมจัตุรัสและคำไม่ล้นด้วยหน่วย Aspect Ratio */
+        /* ช่องสี่เหลี่ยม */
         td {
-            width: 20%; /* แบ่ง 5 ช่องเท่ากัน 100% */
-            aspect-ratio: 1 / 1; /* บังคับให้เป็นสี่เหลี่ยมจัตุรัสเสมอไม่ว่าจะอยู่บนจอไหน */
-            border: 2px solid #524388;
-            border-radius: 15px; text-align: center; font-weight: bold; 
-            color: #524388; cursor: pointer; transition: 0.3s; 
-            padding: 5px; 
-            font-size: calc(10px + 0.4vw); /* ปรับขนาดฟอนต์ยืดหยุ่นตามหน้าจออัตโนมัติ */
-            box-sizing: border-box;
+            width: 20%; 
+            aspect-ratio: 1 / 1; /* บังคับสี่เหลี่ยมจัตุรัส */
+            background-color: #ffffff;
+            border: 2px solid #f6a122; /* ขอบสีส้ม */
+            border-radius: 12px; /* ขอบมนตามภาพ */
+            text-align: center; 
             vertical-align: middle;
+            font-weight: 600; 
+            color: #0b2e59; /* ตัวอักษรสีน้ำเงินเข้ม */
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            padding: 2px; 
+            font-size: clamp(9px, 2.8vw, 13px); /* ขนาดตัวอักษรยืดหยุ่น */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             
-            /* ป้องกันคำล้นช่อง */
             word-wrap: break-word;
             word-break: break-all;
             overflow: hidden;
-        }
-        td:hover { background-color: #f0f0f0; }
-        td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
-        
-        .free-space { border: none !important; background: transparent !important; cursor: default; }
-        
-        /* [ปรับปรุงจุดที่ 2] ขยายโลโก้ให้ใหญ่ขึ้นโดยที่สัดส่วนไม่เพี้ยน */
-        .free-space img { 
-            width: 95%; 
-            height: 95%; 
-            max-width: 90px;
-            max-height: 90px;
-            object-fit: contain; /* รักษาอัตราส่วนภาพดั้งเดิมไว้ ไม่ให้ภาพบี้หรือเบี้ยว */
-            border-radius: 50%; 
-            border: 4px solid #F1921E; 
-            display: block;
-            margin: 0 auto;
+            line-height: 1.2;
         }
 
+        /* เอฟเฟกต์ตอนกดช่อง */
+        td:active {
+            transform: scale(0.95);
+        }
+
+        /* ช่องที่ถูกเลือกแล้ว (เปลี่ยนเป็นสีส้มทึบ) */
+        td.marked { 
+            background: linear-gradient(180deg, #ffb703 0%, #fb8500 100%);
+            color: white; 
+            border-color: #e67e22; 
+        }
+        
+        /* ช่องตรงกลาง (FREE) ดีไซน์เหมือน JUMP+ ในภาพ */
+        .free-space { 
+            background: linear-gradient(180deg, #ffb703 0%, #fb8500 100%) !important;
+            color: white !important;
+            border: none !important;
+            font-size: clamp(12px, 3.5vw, 16px) !important;
+            font-weight: 700 !important;
+            cursor: default;
+        }
+
+        /* ข้อความด้านล่างสุด */
+        .footer-text {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* หน้าจอแจ้งเตือนตอน BINGO */
         #bingoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95); display: none;
+            background: rgba(4, 33, 67, 0.95); display: none;
             justify-content: center; align-items: center; z-index: 10;
+            flex-direction: column;
         }
-        #bingoText { font-size: 100px; color: #524388; font-weight: bold; text-shadow: 5px 5px #F1921E; }
-        
-        /* ปรับขนาดตัวหนังสือคำว่า BINGO บนหน้าจอมือถือ */
-        @media (max-width: 600px) {
-            #bingoText { font-size: 60px; }
-            table { padding: 10px; border-spacing: 5px; }
-            td { padding: 2px; font-size: 11px; border-radius: 10px; }
+        #bingoText { 
+            font-size: 80px; 
+            color: #ffffff; 
+            font-weight: 700; 
+            text-shadow: 0 0 20px #fca311, 4px 4px 0px #fca311; 
         }
+        .close-hint { color: white; margin-top: 10px; font-weight: 300; }
+
     </style>
 </head>
 <body>
 
-    <h1>INTEGRITY BINGO</h1>
-    
-    <div class="chart-container">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
+    <div class="app-container">
+        <div class="header">
+            <div class="title-area">
+                <div class="title-top">INTEGRITY 2026</div>
+                <div class="title-main">BINGO <span>FREE+</span></div>
+                <div class="title-desc">เทรนทุกก้าว ฟิตทุกสกิล เพื่อทุกเป้าหมายการทำงาน</div>
+            </div>
+            <div class="score-area">
+                BINGO<br>
+                <div class="score-number" id="scoreDisplay">0</div>
+            </div>
+        </div>
 
-    <table id="bingoTable"></table>
+        <div class="divider"></div>
+
+        <table id="bingoTable"></table>
+
+        <div class="footer-text">พร้อมรับมือความท้าทาย เพื่อทุกเป้าหมาย</div>
+    </div>
     
     <div id="bingoOverlay" onclick="this.style.display='none'">
         <div id="bingoText">BINGO!</div>
+        <div class="close-hint">(แตะหน้าจอเพื่อเล่นต่อ)</div>
     </div>
 
     <script>
-        // คงไว้ 80 คำเต็มตามที่คุณต้องการ
         const allWords = [
             "Sincere", "Honest", "Transparency", "Trustworthy", "Accountability",
             "Ethical", "Integrity", "Fair", "Truth", "Reliable",
@@ -137,6 +226,9 @@
             "ความมุ่งมั่น", "ความสม่ำเสมอ", "ความเคารพ", "ความร่วมมือ", "ความเมตตา"
         ];
 
+        let totalBingos = 0;
+        let lastBingoState = false;
+
         function createBingo() {
             const table = document.getElementById('bingoTable');
             let shuffled = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 24);
@@ -147,10 +239,13 @@
                     let cell = row.insertCell();
                     if (i === 2 && j === 2) {
                         cell.className = 'free-space marked';
-                        cell.innerHTML = '<img src="image_bc9682.png" alt="Integrity">';
+                        cell.innerHTML = 'FREE+'; // ช่องตรงกลางเด่นๆ แบบในภาพ
                     } else {
                         cell.innerHTML = shuffled.pop();
-                        cell.onclick = function() { this.classList.toggle('marked'); checkBingo(); };
+                        cell.onclick = function() { 
+                            this.classList.toggle('marked'); 
+                            checkBingo(); 
+                        };
                     }
                 }
             }
@@ -159,12 +254,22 @@
         function checkBingo() {
             const grid = Array.from(document.querySelectorAll('td')).map(c => c.classList.contains('marked'));
             let isBingo = false;
+            
             for (let i = 0; i < 5; i++) {
                 if ([0,1,2,3,4].every(j => grid[i*5 + j]) || [0,1,2,3,4].every(j => grid[j*5 + i])) isBingo = true;
             }
             if ([0,6,12,18,24].every(i => grid[i]) || [4,8,12,16,20].every(i => grid[i])) isBingo = true;
-            document.getElementById('bingoOverlay').style.display = isBingo ? 'flex' : 'none';
+            
+            // ถ้าพึ่งบิงโก ให้เด้งหน้าจอเตือนและอัปเดตตัวเลข
+            if (isBingo && !lastBingoState) {
+                document.getElementById('bingoOverlay').style.display = 'flex';
+                totalBingos++;
+                document.getElementById('scoreDisplay').innerText = totalBingos;
+            }
+            
+            lastBingoState = isBingo;
         }
+
         createBingo();
     </script>
 </body>
