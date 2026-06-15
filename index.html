@@ -39,61 +39,18 @@
             50% { height: 120px; }
         }
 
+        /* บังคับขนาดตารางแบบ Fixed และกำหนดความกว้างรวม */
         table { 
             border-collapse: separate; border-spacing: 8px; 
             background: white; border-radius: 20px; 
             padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             z-index: 1; margin-top: 20px; border: 3px solid #524388;
+            table-layout: fixed;
+            width: 620px; 
         }
-        td {
-            width: 115px; height: 115px; border: 2px solid #524388;
-            border-radius: 15px; text-align: center; font-weight: bold; 
-            color: #524388; cursor: pointer; transition: 0.3s; 
-            padding: 5px; font-size: 14px;
-            box-sizing: border-box;
-            word-wrap: break-word;
-        }
-        td:hover { background-color: #f0f0f0; }
-        td.marked { background-color: #524388 !important; color: white; border-color: #F1921E; }
         
-        .free-space { border: 2px solid #F1921E !important; background: #fff3e0 !important; cursor: default; }
-        .free-space img { width: 60px; height: 60px; border-radius: 50%; display: block; margin: 0 auto; }
-
-        .btn-reset {
-            margin-top: 20px; padding: 10px 25px; font-size: 16px; font-weight: bold;
-            color: white; background-color: #524388; border: none; border-radius: 25px;
-            cursor: pointer; z-index: 1; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-reset:hover { background-color: #3f326d; transform: translateY(-2px); }
-
-        #bingoOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95); display: none;
-            justify-content: center; align-items: center; z-index: 10;
-            flex-direction: column; cursor: pointer;
-        }
-        #bingoText { font-size: 80px; color: #524388; font-weight: bold; text-shadow: 5px 5px #F1921E; }
-        .close-hint { font-size: 18px; color: #666; margin-top: 20px; }
-    </style>
-</head>
-<body>
-
-    <h1>INTEGRITY BINGO</h1>
-    
-    <div class="chart-container">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
-
-    <table id="bingoTable"></table>
-    
-    <button class="btn-reset" onclick="createBingo()">เริ่มเกมใหม่ / สลับตาราง</button>
-
-    <div id="bingoOverlay" onclick="closeOverlay()">
-        <div id="bingoText">BINGO!</div>
-        <div class="close-hint">(คลิกตรงไหนก็ได้เพื่อปิดหน้าต่างนี้และเล่นต่อ)</div>
-    </div>
-
-    <script>
-        // รวมคำศัพท์ทั้งหมด 80 คำเต็มครบถ้วน (ไทย 60 คำ + อังกฤษ 20 คำ)
-        const allWords =
+        /* บังคับช่องเป็นสี่เหลี่ยมจัตุรัสเท่ากันหมด และจัดการคำไม่ให้ล้นออกนอกช่อง */
+        td {
+            width: 110px; 
+            height: 110px; 
+            border: 2px solid #5243
