@@ -27,19 +27,20 @@ body {
     overflow-x: hidden;
 }
 
+/* ปรับแต่งส่วนโลโก้ไม่ให้มีพื้นหลัง และช่วยกลืนสีขาว */
 #logo {
     position: absolute;
     top: 20px;
     right: 20px;
     width: 140px;
+    background: transparent; /* มั่นใจได้ว่าไม่มีพื้นหลังสีขาวจากโค้ด */
+    mix-blend-mode: multiply; /* เทคนิคช่วยตัดพื้นหลังสีขาวของตัวรูปภาพให้กลืนไปกับพื้นหลังเข้ม */
 }
 
 h1 {
-    /* ปรับเป็นสีส้มสว่างเด่นๆ ตาม CI ของ SET */
     color: #f57c00; 
     font-size: 54px;
     font-weight: 900;
-    /* ซ้อนเลเยอร์เงาเพื่อให้ตัวอักษรสีส้มตัดขอบคมชัด สไตล์ Popular Vote */
     text-shadow: 3px 3px 0px #ffffff, 6px 6px 0px #1d1145, 0px 10px 20px rgba(0,0,0,0.6);
     margin-top: 40px;
     margin-bottom: 30px;
@@ -61,7 +62,7 @@ td {
     height: 150px;
     background: #ffffff;
     border-radius: 16px;
-    border: 4px solid #f57c00; /* ใช้ขอบสีส้มแมตช์เข้ากับหัวข้อ */
+    border: 4px solid #f57c00; 
     text-align: center;
     vertical-align: middle;
     padding: 10px;
@@ -89,14 +90,13 @@ td.marked {
     border-color: #ffffff;
 }
 
-/* ปรับสไตล์ของ Bingo Message ให้ขึ้นพาดพับกลางหน้าจอแบบเต็มตา */
 #bingoMessage {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    background: rgba(29, 17, 69, 0.9); /* พื้นหลังโปร่งแสงสีเข้มเน้นข้อความ */
+    background: rgba(29, 17, 69, 0.9); 
     padding: 40px 0;
     font-size: 72px;
     font-weight: 900;
@@ -106,7 +106,7 @@ td.marked {
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
     display: none;
     z-index: 9999;
-    pointer-events: none; /* เพื่อไม่ให้บังการจิ้มปิดการบิงโก */
+    pointer-events: none; 
     box-sizing: border-box;
     white-space: nowrap;
 }
@@ -144,7 +144,6 @@ td.marked {
 
 <table id="bingoTable"></table>
 
-<!-- บล็อกข้อความแสดงพาดกลางจอเมื่อชนะ -->
 <div id="bingoMessage">🎉 BINGO! 🎉</div>
 
 <script>
