@@ -30,15 +30,16 @@ body {
     overflow-x: hidden;
 }
 
-/* ปรับปรุงโลโก้: เปลี่ยนพื้นหลังสีขาวให้กลายเป็นขาวสว่างทั้งหมดเพื่อความชัดเจนบนพื้นหลังมืด */
+/* อัปเดตการตั้งค่าโลโก้ใหม่ (แสดงสีม่วง-ส้มดั้งเดิมของรูปภาพ ไม่มีขอบขาวกวนใจ) */
 #logo {
     position: absolute;
     top: 20px;
     right: 20px;
     width: 140px;
     background: transparent;
-    filter: brightness(0) invert(1); /* เปลี่ยนรูปภาพทั้งหมดให้เป็นสีขาวสว่าง */
-    opacity: 0.85;
+    border: none;
+    outline: none;
+    mix-blend-mode: normal; /* แสดงสีสันตามไฟล์จริง */
 }
 
 h1 {
@@ -63,7 +64,6 @@ table {
     max-width: 100%;
 }
 
-/* ปรับขนาดช่องตารางแบบตายตัว (Fixed Ratio) ป้องกันการยืดหดตามความยาวตัวอักษร */
 td {
     width: 150px;
     height: 150px;
@@ -80,7 +80,6 @@ td {
     transition: all 0.2s ease;
     user-select: none;
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    /* บังคับห้ามตัวหนังสือขึ้นบรรทัดใหม่จนดันความสูงช่อง */
     white-space: normal;
     word-break: break-word; 
 }
@@ -120,13 +119,11 @@ td.marked {
     white-space: nowrap;
 }
 
-/* รองรับการแสดงผลในหน้าจอโทรศัพท์มือถือแบบ Responsive สมบูรณ์แบบ */
 @media (max-width: 768px) {
     table {
-        border-spacing: 6px; /* ลดระยะห่างช่องลงเล็กน้อยบนมือถือ */
+        border-spacing: 6px; 
     }
     td {
-        /* คำนวณความกว้างช่องให้พอดีกับหน้าจอและเป็นสี่เหลี่ยมจัตุรัสที่เท่ากันเสมอ */
         width: 21vw; 
         height: 21vw;
         max-width: 100px;
@@ -155,7 +152,7 @@ td.marked {
 
 <body>
 
-<img id="logo" src="image_bc9682.png" alt="Integrity Always">
+<img id="logo" src="Integrity.png" alt="Integrity Always">
 
 <h1>INTEGRITY BINGO</h1>
 
